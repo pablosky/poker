@@ -49,5 +49,6 @@ class Croupier
     @token = nil
     @cards = nil
     self.get_token
+    self.get_cards(52)
   end
 end

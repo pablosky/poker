@@ -5,7 +5,7 @@ RSpec.describe Croupier, type: :model do
   before (:each) do
     @barney = Croupier.new
     @barney.add_cards([{"number"=>"Q", "suit"=>"clubs"}, {"number"=>"10", "suit"=>"diamonds"}, {"number"=>"8", "suit"=>"spades"}])
-    response_cards = "[{\"number\":\"9\",\"suit\":\"clubs\"},{\"number\":\"3\",\"suit\":\"diamonds\"}]"
+    @response_cards = "[{\"number\":\"9\",\"suit\":\"clubs\"},{\"number\":\"3\",\"suit\":\"diamonds\"}]"
     @response_token = "299d5940-c8c1-11e6-9c4b-b5d17f2932f5"
     @error_token =  "{\"statusCode\":500,\"error\":\"Internal Server Error\",\"message\":\"An internal server error occurred\"}"
   end
@@ -33,19 +33,28 @@ RSpec.describe Croupier, type: :model do
 
   describe '#get_token' do
     it 'should get the token and save it in the instance' do
-      stub_request(:any, "http://dealer.internal.comparaonline.com:8080/deck").to_return(:body => @response_token, :status => 200, :headers => {})
-      ted = Croupier.new
-      ted.get_token
-      expect(ted.token).to eq "299d5940-c8c1-11e6-9c4b-b5d17f2932f5"
+      stub_request(:any, "http://dealer.internal.comparaonline.com:8080/deck").to_return(body: @response_token, status: 200, headers: {})
+      @barney.get_token
+      expect(@barney.token).to eq "299d5940-c8c1-11e6-9c4b-b5d17f2932f5"
     end
 
     it 'should keep trying until it gets the token' do
       stub_request(:any, "http://dealer.internal.comparaonline.com:8080/deck").to_return({body: @error_token, status: 500, headers: {}},{body: @response_token, status: 200, headers: {}})
-      ted = Croupier.new
-      ted.get_token
-      expect(ted.token).to eq "299d5940-c8c1-11e6-9c4b-b5d17f2932f5"
+      @barney.get_token
+      expect(@barney.token).to eq "299d5940-c8c1-11e6-9c4b-b5d17f2932f5"
     end
   end
 
+  describe '#get_cards' do
+    it 'should get the number of requested cards' do
+      @barney.cards = nil
+      stub_request(:any, "http://dealer.internal.comparaonline.com:8080/deck").to_return(body: @response_token, status: 200, headers: {})
+      @barney.get_token
+      expect(@barney.cards).to eq nil
+      stub_request(:any, "http://dealer.internal.comparaonline.com:8080/deck/#{@response_token}/deal/#{3}").to_return(body: @response_cards, status: 200, headers: {})
+      @barney.get_cards(3)
+      expect(@barney.cards).to eq JSON.parse(@response_cards)
+    end
+  end
 
 end
