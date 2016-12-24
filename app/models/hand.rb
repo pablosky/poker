@@ -29,12 +29,12 @@ class Hand
       else
         numbers << card.to_i
       end
-      return numbers.sort
     end
+    return numbers.sort
   end
 
   def royal_flush?
-    royal = (cards.map{|card| card['number']} - ["A", "K", "Q", "J", "10"]).empty?
+    royal = (@hand.map{|card| card['number']} - ["A", "K", "Q", "J", "10"]).empty?
     royal && flush?
   end
 
@@ -51,7 +51,7 @@ class Hand
   end
 
   def flush? #or same suit
-    cards.map{|card| card['suit']}.uniq.count == 1
+    @hand.map{|card| card['suit']}.uniq.count == 1
   end
 
   #this way can give some troubles in other cases and its O(n^2) but works great here and we only have arrays of 5
