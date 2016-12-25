@@ -6,10 +6,10 @@ class Hand
     @numbers = numbers_to_integers
   end
   #for testing this we will check the hand against all methods and the response should be only one
-  #i can test all flushes in one method!
+  #we could use a cyclic linked list but this works for 5 cards
   def straight?
     for i in 0..3
-      return false if @numbers[i] + 1 != @numbers[i + 1]
+      return false if @numbers[i] + 1 != @numbers[i + 1] && (9 + @numbers[i]) != @numbers[i + 1]  #second one its for edge straigths 9 its a ciclic pivot if will be 6 cards it will be 8 
     end
     return true
   end

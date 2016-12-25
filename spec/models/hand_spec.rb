@@ -4,6 +4,11 @@ RSpec.describe Hand, type: :model do
 
   let(:straight) {[{"number"=>"10", "suit"=>"spades"}, {"number"=>"9", "suit"=>"hearts"}, {"number"=>"8", "suit"=>"hearts"},
               {"number"=>"7", "suit"=>"spades"}, {"number"=>"6", "suit"=>"hearts"}]}
+  let(:edge_straight) {[{"number"=>"A", "suit"=>"spades"}, {"number"=>"2", "suit"=>"hearts"}, {"number"=>"K", "suit"=>"hearts"},
+                          {"number"=>"Q", "suit"=>"spades"}, {"number"=>"J", "suit"=>"hearts"}]}
+  let(:second_edge_straight) {[{"number"=>"A", "suit"=>"spades"}, {"number"=>"2", "suit"=>"hearts"}, {"number"=>"K", "suit"=>"hearts"},
+                          {"number"=>"Q", "suit"=>"spades"}, {"number"=>"3", "suit"=>"hearts"}]}
+
   let(:flush)  {[{"number"=>"10", "suit"=>"spades"}, {"number"=>"4", "suit"=>"spades"}, {"number"=>"3", "suit"=>"spades"},
            {"number"=>"Q", "suit"=>"spades"}, {"number"=>"8", "suit"=>"spades"}]}
 
@@ -12,7 +17,7 @@ RSpec.describe Hand, type: :model do
 
   let(:royal_flush) {[{"number"=>"10", "suit"=>"spades"}, {"number"=>"A", "suit"=>"spades"}, {"number"=>"K", "suit"=>"spades"},
               {"number"=>"J", "suit"=>"spades"}, {"number"=>"Q", "suit"=>"spades"}]}
-  let(:fake_royal_flush) {[{"number"=>"10", "suit"=>"hearts"}, {"number"=>"A", "suit"=>"spades"}, {"number"=>"K", "suit"=>"spades"},
+  let(:fake_royal_flush) {[{"number"=>"9", "suit"=>"hearts"}, {"number"=>"A", "suit"=>"spades"}, {"number"=>"K", "suit"=>"spades"},
               {"number"=>"J", "suit"=>"spades"}, {"number"=>"Q", "suit"=>"hearts"}]}
 
   describe '#royal_flush?' do
@@ -25,8 +30,7 @@ RSpec.describe Hand, type: :model do
     it 'should detect the royal flush' do
       hand = Hand.new(fake_royal_flush)
       expect(hand.royal_flush?).to eq false
-      expect(hand.straight?).to eq true
-      expect(hand.rank).to eq 6
+      expect(hand.rank).to eq 1
     end
   end
 
@@ -44,6 +48,19 @@ RSpec.describe Hand, type: :model do
       expect(hand.straight?).to eq true
       expect(hand.rank).to eq 5
     end
+
+    it 'should find straight in the edges' do
+      hand = Hand.new(edge_straight)
+      expect(hand.straight?).to eq true
+      expect(hand.rank).to eq 5
+    end
+    
+    it 'should find straight in the edges' do
+      hand = Hand.new(second_edge_straight)
+      expect(hand.straight?).to eq true
+      expect(hand.rank).to eq 5
+    end
+
   end
 
   describe '#trio?' do
