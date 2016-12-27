@@ -54,13 +54,28 @@ RSpec.describe Hand, type: :model do
       expect(hand.straight?).to eq true
       expect(hand.rank).to eq 5
     end
-    
+
     it 'should find straight in the edges' do
       hand = Hand.new(second_edge_straight)
       expect(hand.straight?).to eq true
       expect(hand.rank).to eq 5
     end
 
+  end
+  describe '#four_of_a_kind' do
+    it ' should detect a four of a kind' do
+      hand = Hand.new(four_of_a_kind)
+      expect(hand.four_of_a_kind?).to eq true
+      expect(hand.rank).to eq 8
+    end
+  end
+
+  describe '#full_house' do
+    it ' should detect a full house' do
+      hand = Hand.new(full_house)
+      expect(hand.full_house?).to eq true
+      expect(hand.rank).to eq 7
+    end
   end
 
   describe '#trio?' do

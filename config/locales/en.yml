@@ -21,3 +21,4 @@
 
 en:
   hello: "Hello world"
+  ranks: ["high card", "one pair", "two pairs", "trio", "straight", "flush", "full house", "four of a kind", "straight flush", "royal flush"]
