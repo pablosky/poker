@@ -11,5 +11,7 @@ module PokerProject
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+    I18n.config.i18n.default_locale = :en
+    I18n.config.available_locales = [:en, :es, :pt, :cn, :de, :fr, :it, :ru]
   end
 end
