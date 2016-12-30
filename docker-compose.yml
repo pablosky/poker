@@ -12,7 +12,7 @@ services:
       - VIRTUAL_HOST=poker_project.dev.com
       - RAILS_LOG_TO_STDOUT=true
     ports:
-      - "80"
+      - "80:80"
     volumes:
       - .:/home/app/webapp
   poker_project-db:
@@ -30,10 +30,6 @@ services:
     volumes:
       - /var/lib/postgresql/data
     command: /bin/true
-
-    networks:
-      - default
-      - poker
 
 networks:
   poker:

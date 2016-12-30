@@ -1,24 +1,42 @@
-# README
+# Requirements
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- Docker 1.12+
+- Docker Compose 1.8+
 
-Things you may want to cover:
+# Setup
 
-* Ruby version
 
-* System dependencies
+Add `poker_project.dev.com` to your `/etc/hosts` file.
 
-* Configuration
+## Building the application
 
-* Database creation
+```
+docker-compose build
+```
 
-* Database initialization
+## Running the application
 
-* How to run the test suite
+start the app
+```
+docker-compose up -d
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+# Testing
 
-* Deployment instructions
+First, create the test database:
 
-* ...
+```
+$ docker-compose exec webapp /bin/bash -c "RAILS_ENV=test rake db:create"
+```
+
+Then you can run the specs with:
+
+```
+$ docker-compose exec webapp /bin/bash -c "RAILS_ENV=test bundle exec rspec"
+```
+
+# Running migrations
+
+```
+$ docker-compose exec webapp /bin/bash -c "bundle exec rake db:migrate"
+```
