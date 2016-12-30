@@ -1,9 +1,10 @@
 class Hand
-  attr_accessor :hand, :numbers
+  attr_accessor :hand, :numbers, :name
 
   def initialize(cards)
     @hand = cards
     @numbers = numbers_to_integers
+    @name = name
   end
   #for testing this we will check the hand against all methods and the response should be only one
   #we could use a cyclic linked list but this works for 5 cards

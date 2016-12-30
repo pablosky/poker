@@ -3,6 +3,7 @@ class PokerGamesController < ApplicationController
   def welcome
   end
 
+  #this could be easilly slimed in a poker_game model, i leave it like this for time reasons
   def game
     #start
     #game = PokerGame.new
@@ -21,8 +22,8 @@ class PokerGamesController < ApplicationController
         tie = 1
         while @winner.nil?
           @winner = "its a tie!" if @bruce.untie(tie).nil? #any of them satisfies
-          @winner = "bruce has won! by tie-breaker" if @bruce.untie(tie) > @felicia.untie(tie)
-          @winner = "bruce has won! by tie-breaker" if @bruce.untie(tie) < @felicia.untie(tie)
+          @winner = "Bruce has won! by tie-breaker with #{@bruce.untie(tie)}" if @bruce.untie(tie) > @felicia.untie(tie)
+          @winner = "Felicia has won! by tie-breaker with #{@felicia.untie(tie)}" if @bruce.untie(tie) < @felicia.untie(tie)
           tie += 1
         end
       elsif @bruce.rank > @felicia.rank
