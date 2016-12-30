@@ -9,7 +9,7 @@ class Hand
   #we could use a cyclic linked list but this works for 5 cards
   def straight?
     for i in 0..3
-      return false if @numbers[i] + 1 != @numbers[i + 1] && (9 + @numbers[i]) != @numbers[i + 1]  #second one its for edge straigths 9 its a ciclic pivot if will be 6 cards it will be 8 
+      return false if @numbers[i] + 1 != @numbers[i + 1] && (9 + @numbers[i]) != @numbers[i + 1]  #second one its for edge straigths 9 its a ciclic pivot if will be 6 cards it will be 8
     end
     return true
   end
@@ -19,7 +19,7 @@ class Hand
     @hand.map{|card| card['number']}.each do |card|
       case card
       when "A"
-        numbers << 1
+        numbers << 14
       when "K"
         numbers << 13
       when "Q"
@@ -43,7 +43,7 @@ class Hand
   end
 
   def four_of_a_kind?
-    return @numbers.find_all{ |e| @numbers.count(e) == 4 }.present?
+    @numbers.find_all{ |e| @numbers.count(e) == 4 }.present?
   end
 
   def full_house?
@@ -56,19 +56,15 @@ class Hand
 
   #this way can give some troubles in other cases and its O(n^2) but works great here and we only have arrays of 5
   def trio?
-    return @numbers.find_all{ |e| @numbers.count(e) == 3 }.uniq.count == 1
+    @numbers.find_all{ |e| @numbers.count(e) == 3 }.uniq.count == 1
   end
 
   def two_pairs?
-    return @numbers.find_all{ |e| @numbers.count(e) == 2 }.uniq.count == 2
+    @numbers.find_all{ |e| @numbers.count(e) == 2 }.uniq.count == 2
   end
 
   def one_pair?
-    return @numbers.find_all{ |e| @numbers.count(e) == 2 }.uniq.count == 1
-  end
-
-  def high_card
-    @numbers.last
+    @numbers.find_all{ |e| @numbers.count(e) == 2 }.uniq.count == 1
   end
 
   #from 10 to 1
@@ -83,6 +79,20 @@ class Hand
     return 3 if two_pairs?
     return 2 if one_pair?
     return 1
+  end
+
+  def untie
+    return "tie" if rank == 10
+    return untie_straigh_flush(1) if rank == 9
+    return untie_four_of_a_kind(1) if rank == 8
+  end
+
+  def untie_straigh_flush(tie)
+    @numbers[5-tie] #the biggest number and so on
+  end
+
+  def untie_four_of_a_kind(tie)
+    return "dsa"
   end
 
 end

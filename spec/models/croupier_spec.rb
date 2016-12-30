@@ -50,7 +50,7 @@ RSpec.describe Croupier, type: :model do
       @barney.cards = nil
       stub_request(:any, "http://dealer.internal.comparaonline.com:8080/deck").to_return(body: @response_token, status: 200, headers: {})
       @barney.get_token
-      expect(@barney.cards).to eq nil
+      expect(@barney.cards).to eq []
       stub_request(:any, "http://dealer.internal.comparaonline.com:8080/deck/#{@response_token}/deal/#{3}").to_return(body: @response_cards, status: 200, headers: {})
       @barney.get_cards(3)
       expect(@barney.cards).to eq JSON.parse(@response_cards)
