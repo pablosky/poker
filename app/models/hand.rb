@@ -81,18 +81,48 @@ class Hand
     return 1
   end
 
-  def untie
-    return "tie" if rank == 10
-    return untie_straigh_flush(1) if rank == 9
-    return untie_four_of_a_kind(1) if rank == 8
+  def untie(tie)
+    #a final tie its nil for all unties, if both have royal flush its always a tie
+    return untie_straigh(tie) if [1, 9, 6, 5].include?(rank)
+    return untie_four_of_a_kind(tie) if rank == 8
+    return untie_full_house(tie) if rank == 7
+    return untie_trio(tie) if rank == 4
+    return untie_two_pairs(tie) if rank == 3
+    return untie_pair(tie) if rank == 2
   end
 
-  def untie_straigh_flush(tie)
+  def untie_straigh(tie) #or untie straigths and royal flush all the same
     @numbers[5-tie] #the biggest number and so on
   end
 
   def untie_four_of_a_kind(tie)
-    return "dsa"
+    return @numbers.find_all{ |e| @numbers.count(e) == 4 }.sum if tie == 1
+    return @numbers.find_all{ |e| @numbers.count(e) == 1 }.sum if tie == 2
+  end
+
+  def untie_full_house(tie)
+    return @numbers.find_all{ |e| @numbers.count(e) == 3 }.sum if tie == 1
+    return @numbers.find_all{ |e| @numbers.count(e) == 2 }.sum if tie == 2
+  end
+
+  def untie_two_pairs(tie)
+    return @numbers.find_all{ |e| @numbers.count(e) == 2 }.uniq.sort.last if tie == 1#highest pair
+    return @numbers.find_all{ |e| @numbers.count(e) == 2 }.uniq.sort.first if tie == 2 #second highest pair
+    return @numbers.find_all{ |e| @numbers.count(e) == 1 }.first if tie ==3 #high lonely card
+  end
+
+  def untie_trio(tie)
+    return @numbers.find_all{ |e| @numbers.count(e) == 3 }.uniq.first if tie == 1
+    return @numbers.find_all{ |e| @numbers.count(e) == 1 }.sort.last if tie == 2
+    return @numbers.find_all{ |e| @numbers.count(e) == 1 }.sort.first if tie == 3
+  end
+
+  def untie_one_pair(tie)
+    #this can be definetly improved
+    return @numbers.find_all{ |e| @numbers.count(e) == 2 }.uniq.sort.last if tie == 1
+    return @numbers.find_all{ |e| @numbers.count(e) == 1 }.uniq.sort.last if tie == 2
+    return @numbers.find_all{ |e| @numbers.count(e) == 1 }.uniq.sort.second if tie == 3
+    return @numbers.find_all{ |e| @numbers.count(e) == 1 }.uniq.sort.first if tie == 4
   end
 
 end
