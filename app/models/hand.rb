@@ -117,7 +117,7 @@ class Hand
     return @numbers.find_all{ |e| @numbers.count(e) == 1 }.sort.first if tie == 3
   end
 
-  def untie_one_pair(tie)
+  def untie_pair(tie)
     #this can be definetly improved
     return @numbers.find_all{ |e| @numbers.count(e) == 2 }.uniq.sort.last if tie == 1
     return @numbers.find_all{ |e| @numbers.count(e) == 1 }.uniq.sort.last if tie == 2

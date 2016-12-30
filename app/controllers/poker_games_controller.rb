@@ -18,7 +18,13 @@ class PokerGamesController < ApplicationController
       @felicia = Hand.new(@alfred.give_cards(5))
       #winner
       if @bruce.rank == @felicia.rank
-        @winner = "its a tie!"
+        tie = 1
+        while @winner.nil?
+          @winner = "its a tie!" if @bruce.untie(tie).nil? #any of them satisfies
+          @winner = "bruce has won! by tie-breaker" if @bruce.untie(tie) > @felicia.untie(tie)
+          @winner = "bruce has won! by tie-breaker" if @bruce.untie(tie) < @felicia.untie(tie)
+          tie += 1
+        end
       elsif @bruce.rank > @felicia.rank
         @winner = "bruce has won! with #{I18n.t('ranks')[@bruce.rank() -1]}"
       else
